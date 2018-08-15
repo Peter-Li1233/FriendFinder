@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FriendFinder</title>
+  
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            margin:auto;
+            width: 100%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="jumbotron">
+            <h1><i class="fa fa-camera-retro fa-lg"></i> Soulmate Finder</h1>
+            <hr>
+            <h2>Read their mind behind the beautiful face!</h2>
+            <br>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="col-sm-9">
+            <div id="preview" class="carousel slide" data-ride="carousel">
+
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                      <li data-target="#preview" data-slide-to="0" class="active"></li>
+                      <li data-target="#preview" data-slide-to="1"></li>
+                      <li data-target="#preview" data-slide-to="2"></li>
+                    </ul>
+                  
+                    <!-- The slideshow -->
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img src="https://openphoto.net/volumes/miro/20131028/openphotonet_lionfish_1.JPG" alt="">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="https://openphoto.net/volumes/rmarinello/20071011/openphotonet_IMG_2460_resize.jpg" alt="">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="https://openphoto.net/volumes/miro/20131028/openphotonet_red_panda.JPG" alt="">
+                      </div>
+                    </div>
+                  
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#preview" data-slide="prev">
+                      <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#preview" data-slide="next">
+                      <span class="carousel-control-next-icon"></span>
+                    </a>
+                  
+                  </div>
+            </div> 
+        </div>
+        
+        <footer class="footer">
+                <div class="container">
+                  <p><a href="/api/friends">API soulmates List</a> | <a href="https://github.com/Peter-Li1233/FriendFinder">GitHub Repo</a></p>
+                </div>
+        </footer>
+    </div>
+    
+    <script type="text/javascript">
+
+       
+        // AJAX post the data to the friends API.
+        $.get("/api/friends", function(data) {
+
+            console.log(data);
+            var carouselIndicator = $(".carousel-indicators");
+                carouselIndicator.empty();
+            for (i=0; i<data.length; i++) {
+                var newLi = $('<li>');
+                    if(i === 0) {
+                        newLi.attr("data-target", "#preview");
+                        newLi.attr("data-slide-to", i);
+                        newLi.attr("class", "active");
+                    } else {
+                        newLi.attr("data-target", "#preview");
+                        newLi.attr("data-slide-to", i);
+                    }
+               
+                    carouselIndicator.append(newLi);
+
+            }
+            var carouselInner = $(".carousel-inner");
+                carouselInner.empty();
+            for (i=0; i<data.length; i++) {
+                var newDiv = $('<div>');
+                    if(i === 0) {
+                        newDiv.attr("class", "carousel-item active");
+                    } else {
+                        newDiv.attr("class", "carousel-item");
+                    }
+                var newImg = $('<img>');
+                    newImg.attr("src", data[i].photo);
+                    newImg.attr("alt", data[i].name);
+                    newDiv.append(newImg);
+                    carouselInner.append(newDiv);
+
+            }
+
+            
+            // //Grab the result from the AJAX post so that the best match's name and photo are displayed.
+            // $("#match-name").text(data.name);
+            // $("#match-img").attr("src", data.photo);
+
+            // //Show the modal with the best match
+            // $("#results-modal").modal("toggle");
+    
+        });
+          
+      </script>
+
+<body>
+
+</body>
+</html>
